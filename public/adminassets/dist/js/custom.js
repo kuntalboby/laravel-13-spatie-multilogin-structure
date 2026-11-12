@@ -1,14 +1,18 @@
-$('.moodChanger').click(function () {
-    const changedToMode = $(this).attr('mode');
+const moodChangerFunc = (changedToMode) => {
     if (changedToMode === 'N') {
-        $(this).attr('mode', 'D');
+        $('.moodChanger').attr('mode', 'D');
         $('#modeIcon').attr('class', 'fas fa-sun');
         $('body').addClass('dark-mode');
     } else {
-        $(this).attr('mode', 'N');
+        $('.moodChanger').attr('mode', 'N');
         $('#modeIcon').attr('class', 'fas fa-moon');
         $('body').removeClass('dark-mode');
     }
+}
+$('.moodChanger').click(function () {
+    const changedToMode = $(this).attr('mode');
+    localStorage.setItem('theme-mode', changedToMode);
+    moodChangerFunc(changedToMode);
 });
 $('.selectAll').change(function () {
     const getModule = $(this).data('slug');
@@ -43,4 +47,34 @@ $('.showHidePass').click(function () {
         $('.' + thisId).removeClass('fa-eye').addClass('fa-eye-slash');
     }
 });
+$('#color_code').on('keyup', function () {
+    const colorCode = $(this).val();
+    $('#showColorCode').css('background', colorCode);
+});
+
+function previewImage(input) {
+    const container = document.getElementsByClassName('preview-container')[0];
+    const viewer = document.getElementById('image-viewer');
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            viewer.src = e.target.result;
+            container.style.display = 'block'; // Make the container visible
+        }
+        reader.readAsDataURL(input.files[0]);
+    } else {
+        // Hide the element if the user clears out their selection
+        viewer.src = '#';
+        container.style.display = 'none';
+    }
+}
+
+$(function () {
+    const changedToMode = localStorage.getItem('theme-mode');
+    moodChangerFunc(changedToMode);
+
+});
+
 

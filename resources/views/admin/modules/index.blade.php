@@ -1,14 +1,14 @@
 <x-admin.inner>
     @php
-        $params['title'] = 'All Modules';
-        // $params['title'] = 'All Modules';
+$params['title'] = 'All Modules';
+// $params['title'] = 'All Modules';
     @endphp
         <x-admin.breadcrumb :params="$params" />
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card">
+                        <div class="card card-primary card-outline">
                             
                             <div class="card-header">
                                 <h3 class="card-title">Module List</h3>

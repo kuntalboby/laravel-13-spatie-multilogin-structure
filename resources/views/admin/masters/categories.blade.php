@@ -7,7 +7,7 @@ $params['title'] = 'All Categories';
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-primary card-outline">
 
                         <div class="card-header">
                             <h3 class="card-title">Category List</h3>
@@ -47,7 +47,7 @@ $params['title'] = 'All Categories';
                                                 @if ($category->status == 0)
                                                     <i class="fas fa-check text-success"></i>
                                                 @else
-                                                    <i class="fas fa-cancel text-danger"></i>
+                                                    <i class="fas fa-times text-danger"></i>
                                                 @endif                                       
                                             </td>
                                             <td>
@@ -77,15 +77,7 @@ $params['title'] = 'All Categories';
                             </table>
                         </div>
                         <!-- /.card-body -->
-                        {{-- <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-                            </ul>
-                        </div> --}}
+                        
                     </div>
 
 

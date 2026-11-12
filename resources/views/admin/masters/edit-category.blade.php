@@ -1,4 +1,4 @@
-@section('title', 'Category :' . $category->name)
+@section('title', 'Edit Category :' . $category->name)
 <x-admin.inner>
         @php
 $params['title'] = 'Category' . $category->name;

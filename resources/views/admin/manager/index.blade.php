@@ -7,7 +7,7 @@ $params['title'] = 'All Managers';
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card">
+                    <div class="card card-primary card-outline">
 
                         <div class="card-header">
                             <h3 class="card-title">Manager List</h3>
@@ -46,7 +46,7 @@ $params['title'] = 'All Managers';
                                                 {{ $user->email }}
                                             </td>
                                             <td>
-                                                {{ ($user->gender == 'M' ? 'Male': ( $user->gender =='F'? 'Female' : 'Transgender' ))  }}
+                                                {{ ($user->gender == 'M' ? 'Male' : ($user->gender == 'F' ? 'Female' : 'Transgender'))  }}
                                             </td>
                                             <td>
                                                 @if ($user->status == 0)
@@ -68,7 +68,7 @@ $params['title'] = 'All Managers';
                                                     </div>
                                                     <div class="col-md-8">
                                                         <a onclick="if(confirm('Are you sure you want to delete?')){ return true;}else{ return false; }"
-                                                            href="{{ route('admin.manager.delete', $user->randomid ) }}"
+                                                            href="{{ route('admin.manager.delete', $user->randomid) }}"
                                                             title="Delete"><i class="fa fa-trash text text-danger"></i></a>
                                                     </div>
                                                 </div>

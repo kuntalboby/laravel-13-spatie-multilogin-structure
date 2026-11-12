@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -12,13 +13,24 @@ class Category extends Model
     //
     protected static function booted(): void
     {
+        static::addGlobalScope('is_deleted', function (Builder $builder) {
+            $builder->where('is_deleted', '0');
+        });
+
+         static::creating(function (Category $category) {
+            $category->randomid = Str::random(20);
+        });
         static::saving(function (Category $category) {
             if ($category->isDirty('title')) {
                 $category->slug = Str::slug($category->title,'-');
             }
-            $category->randomid = Str::random(20);
+           
         });
     }
+     public function children(){
+        return $this->hasMany(Category::class, 'parent_id');
+    }
+
     // public static function getParentTree($category) {
     //     $parents = [];
         

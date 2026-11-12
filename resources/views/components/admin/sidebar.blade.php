@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-dark-warning elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('/') }}" target="_blank" class="brand-link">
         <img src="{{asset('adminassets/dist/img/AdminLTELogo.png')}}" alt="Adminpanel"
@@ -39,8 +39,8 @@
     request()->routeIs('admin.modules.*')
     || request()->routeIs('admin.permissions.*')
 ) menu-is-opening menu-open @endif">
-                                            <a href="javascript:void(0);" class="nav-link *:
-                                            @if(
+                    <a href="javascript:void(0);" class="nav-link *:
+                     @if(
     request()->routeIs('admin.modules.*')
     || request()->routeIs('admin.permissions.*')
 ) active @endif ">
@@ -107,22 +107,63 @@
                 @endhasanyrole
 
                 @hasanyrole('admin|manager')
-                <li class="nav-item">
-                    <a href="javascript:void(0);" class="nav-link">
+                <li class="nav-item
+                @if (request()->routeIs('admin.masters.*')) 
+                    menu-is-opening menu-open @endif"
+                >
+                    <a href="javascript:void(0);" class="nav-link
+                    @if (request()->routeIs('admin.masters.*')) active @endif
+                    ">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             E-commerce
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{{ route('admin.masters.category') }}"
-                                class="nav-link">
+                                class="nav-link
+                                 @if (request()->routeIs('admin.masters.category') || request()->routeIs('admin.masters.create.category')) active @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Category</p>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.masters.size') }}"
+                                class="nav-link
+                                 @if (request()->routeIs('admin.masters.size') || request()->routeIs('admin.masters.create.size')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Size</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.masters.color') }}"
+                                class="nav-link
+                                      @if (request()->routeIs('admin.masters.color') || request()->routeIs('admin.masters.create.color')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Color</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('admin.masters.brand') }}"
+                                class="nav-link @if (request()->routeIs('admin.masters.brand') || request()->routeIs('admin.masters.create.brand')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Brand</p>
+                            </a>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a href="{{ route('admin.masters.products.index') }}"
+                                class="nav-link @if(request()->routeIs('masters.products.index.*')) active @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Products</p>
+                            </a>
+                        </li>
+                        
                     </ul>
                 </li>
                 @endhasanyrole

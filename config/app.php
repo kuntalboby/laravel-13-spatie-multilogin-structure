@@ -122,5 +122,9 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    'pagination_count' => env('PAGINATION_COUNT', 10),
+    'PROD_IMAGE_THUMB_W' => env('PROD_IMAGE_THUMB_W', 300),
+    'PROD_IMAGE_THUMB_H' => env('PROD_IMAGE_THUMB_H', 300),
+    'PROD_FORMS_COUNT' => env('PROD_FORMS_COUNT', 3),
 
 ];

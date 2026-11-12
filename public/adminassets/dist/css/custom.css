@@ -1,0 +1,25 @@
+/* Fix alignment and width to match standard Bootstrap form layout */
+.select2-container--default {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Force Select2 heights to perfectly align with native Bootstrap inputs */
+.select2-container .select2-selection--single {
+    height: 38px !important;
+    /* Standard Bootstrap 4/5 form-control height */
+    border: 1px solid #ced4da !important;
+    border-radius: 0.25rem !important;
+}
+
+/* Re-center the text vertically inside the custom Select2 dropdown */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 25px !important;
+    color: #495057 !important;
+    padding-left: 12px !important;
+}
+
+/* Correct the dropdown arrow positioning */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}

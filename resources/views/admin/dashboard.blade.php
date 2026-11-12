@@ -74,7 +74,7 @@ $params['title'] = 'Welcome ' . auth()->user()->first_name . ' ' . auth()->user(
                         @endrole
                         
                         @hasanyrole('admin|manager')
-                        <a href="{{ route('admin.products.index') }}">Products</a>
+                       
                         <a href="{{ route('admin.orders.index') }}">Orders</a>
                         @endhasanyrole
 
