@@ -90,6 +90,7 @@ $variationData = old('data', $savedVariations ?? []);
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="category_id">Category *</label>
+                                                                    <input type="hidden" name="category_id" value="{{ old('category_id', $product->category_id) }}">
                                                                     <select disabled class="form-control select2"
                                                                         name="category_id" id="category_id">
                                                                         <option value="0">Select Category</option>
@@ -105,6 +106,7 @@ $variationData = old('data', $savedVariations ?? []);
                                                             <div class="col-md-4">
                                                                 <div class="form-group">
                                                                     <label for="brand_id">Brands *</label>
+                                                                    <input type="hidden" name="brand_id" value="{{ old('brand_id', $product->brand_id) }}">
                                                                     <select class="form-control select2" disabled name="brand_id"
                                                                         id="brand_id">
                                                                         <option value="0">Select Brand</option>
@@ -120,6 +122,7 @@ $variationData = old('data', $savedVariations ?? []);
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="product_for">Product For *</label>
+                                                                    <input type="hidden" name="product_for" value="{{ old('product_for', $product->product_for) }}">
                                                                     <select class="form-control" disabled name="product_for"
                                                                         id="product_for">
                                                                         <option value="A" @selected(old('product_for', $product->product_for) == 'A')>Adult</option>
@@ -130,6 +133,7 @@ $variationData = old('data', $savedVariations ?? []);
                                                             <div class="col-md-3">
                                                                 <div class="form-group">
                                                                     <label for="gender_id">Choose Gender *</label>
+                                                                    <input type="hidden" name="gender_id" value="{{ old('gender_id', $product->gender_id) }}">
                                                                     <select class="form-control" disabled name="gender_id"
                                                                         id="gender_id">
                                                                         <option value="0">Select Gender</option>
@@ -186,11 +190,13 @@ $variationData = old('data', $savedVariations ?? []);
                                                                 <div class="form-group text-center">
                                                                     <label for="is_featured">Is Featured?</label>
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input type="hidden" name="is_featured"
-                                                                            value="0">
+                                                                        
                                                                         <input class="custom-control-input"
-                                                                            name="is_featured" value="1" type="checkbox"
-                                                                            id="is_featured" @checked(old('is_featured', $product->is_featured)) />
+                                                                            name="is_featured"  type="checkbox"
+                                                                            id="is_featured"
+                                                                            @if ($product->is_featured == '1') checked="checked" @endif
+                                                                            value="{{ old('is_featured', $product->is_featured) }}"
+                                                                            />
                                                                         <label for="is_featured"
                                                                             class="custom-control-label">Yes</label>
                                                                     </div>
@@ -200,12 +206,12 @@ $variationData = old('data', $savedVariations ?? []);
                                                                 <div class="form-group text-center">
                                                                     <label for="is_promotional">Is Promoted</label>
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input type="hidden" name="is_promotional"
-                                                                            value="0">
+                                                                       
                                                                         <input class="custom-control-input"
-                                                                            name="is_promotional" value="1"
+                                                                            name="is_promotional" 
                                                                             type="checkbox" id="is_promotional"
-                                                                            @checked(old('is_promotional', $product->is_promotional)) />
+                                                                             @if ($product->is_promotional == '1') checked="checked" @endif
+                                                                            value="{{ old('is_promotional', $product->is_promotional) }}" />
                                                                         <label for="is_promotional"
                                                                             class="custom-control-label">Yes</label>
                                                                     </div>
@@ -215,10 +221,11 @@ $variationData = old('data', $savedVariations ?? []);
                                                                 <div class="form-group text-center">
                                                                     <label for="status">Status *</label>
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input type="hidden" name="status" value="0">
                                                                         <input class="custom-control-input"
-                                                                            name="status" value="1" type="checkbox"
-                                                                            id="status" @checked(old('status', $product->status)) />
+                                                                            name="status" value="{{old('status', $product->status)}}" type="checkbox"
+                                                                            id="status" 
+                                                                            @if ($product->status == '0') checked="checked" @endif
+                                                                            />
                                                                         <label for="status"
                                                                             class="custom-control-label">Active</label>
                                                                     </div>

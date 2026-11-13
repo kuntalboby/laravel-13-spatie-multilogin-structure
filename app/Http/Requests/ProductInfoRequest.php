@@ -24,6 +24,7 @@ class ProductInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
+           
                     'name' => ['required', 'max:100'],
                     'gst'  => ['nullable','between:0,100'],
                     'category_id' => ['required','exists:categories,id'],
@@ -32,9 +33,9 @@ class ProductInfoRequest extends FormRequest
                     'product_for'=>['required','in:A,K'],
                     'short_description' => ['nullable','max:200'],
                     'long_description' => ['nullable','max:800'],
-                    'is_featured'=>['nullable','in:0,1'],
-                    'is_promotional'=>['nullable','in:0,1'],
-                    'status'=>['nullable','in:0,1'],
+                     'is_featured'=>['nullable','in:"0","1"'],
+                    'is_promotional'=>['nullable','in:"0","1"'],
+                    'status'=>['nullable','in:"0","1"'],
                     'related_product_hash_tag'=>['nullable'],
                     'image' => [
                                 'nullable', 

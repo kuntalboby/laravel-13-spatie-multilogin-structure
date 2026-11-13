@@ -50,7 +50,7 @@ class Product extends Model
 
 
       protected static function generateUniqueSlug(Product $product): string{
-         $brandName = $product->brand?->name;
+         $brandName = $product->brand?->name.' '.$product->name;
          $baseSlug = $brandName ? Str::slug($brandName) : 'miscellaneous'.'-'.Str::slug($product->name);
          $slug = $brandName.'-'.$baseSlug;
          $count = 1;

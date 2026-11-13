@@ -175,9 +175,10 @@ $params['title'] = 'Add Product';
                                                             
                                                             <div class="col-md-3">
                                                                 <div class="form-group text-center">
-                                                                    <label for="is_featured">Is Featured?</label>
+                                                                    <label for="">Is Featured?</label>
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input class="custom-control-input" name="is_featured" value="1" type="checkbox" id="is_featured"
+                                                                        <input class="custom-control-input" name="is_featured" 
+                                                                        value="1" type="checkbox" id="is_featured"
                                                                             {{ old('is_featured', false) ? 'checked' : '' }} />
                                                                         <label for="is_featured" class="custom-control-label">Yes</label>
                                                                     </div>
@@ -198,7 +199,7 @@ $params['title'] = 'Add Product';
                                                                 <div class="form-group text-center">
                                                                     <label for="status">Status *</label>
                                                                     <div class="custom-control custom-checkbox">
-                                                                        <input class="custom-control-input" name="status" value="1" type="checkbox" id="status"
+                                                                        <input class="custom-control-input" name="status" value="0" type="checkbox" id="status"
                                                                             {{ old('status', true) ? 'checked' : '' }} />
                                                                         <label for="status" class="custom-control-label">Active</label>
                                                                     </div>

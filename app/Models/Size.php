@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
@@ -19,6 +20,10 @@ class Size extends Model
             if ($size->isDirty('name')) {
                 $size->slug = Str::slug($size->name,'-');
             }
+        });
+
+        static::addGlobalScope('is_deleted', function (Builder $builder) {
+         $builder->where('is_deleted', '0');
         });
     }
 

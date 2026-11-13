@@ -24,6 +24,7 @@ $params['title'] = 'All Products';
                                     <tr>
                                         <th width="60">Image</th>
                                         <th>Name</th>
+                                        <th>Sizes</th>
                                         <th>Category</th>
                                         <th>Brand</th>
                                         <th width="90">Status</th>
@@ -66,6 +67,7 @@ $params['title'] = 'All Products';
                 columns: [
                     { data: 'image', orderable: false, searchable: false },
                     { data: 'name', name: 'products.name' },
+                    { data: 'sizes', orderable: false },
                     { data: 'category', orderable: true },
                     { data: 'brand', orderable: true },
                     { data: 'status', name: 'products.status' },

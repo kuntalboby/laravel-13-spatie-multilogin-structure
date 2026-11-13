@@ -1,7 +1,7 @@
 @section('title', 'Size :' . $size->name)
 <x-admin.inner>
     @php
-        $params['title'] = 'Size' . $size->name;
+$params['title'] = 'Size' . $size->name;
     @endphp
     <x-admin.breadcrumb :params="$params" />
     <section class="content">
@@ -45,7 +45,7 @@
                             @method('PUT')
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <div class="form-group">
                                             <label for="name">Name *</label>
                                             <input type="text" id="name" class="form-control" name="name"
@@ -53,14 +53,56 @@
                                                 required>
                                         </div>
                                     </div>
+                                    @php
+$target_age = [
+    'A' => 'Adult',
+    'K' => 'Kids',
+];
+$size_for = [
+    'T' => 'Topwear',
+    'B' => 'Bottom',
+    'S' => 'Shoes',
+];
+                                     @endphp
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="target_age">For *</label>
+                                            <select class="form-control" name="target_age" id="target_age" required>
+                                                <option value="0">Choose Target Age</option>
+                                                @foreach ($target_age as $kt => $target)
+                                                    <option 
+                                                    @if ($size->target_age == $kt)
+                                                        selected="selected" 
+                                                    @endif
+                                                    value="{{ $kt }}">{{$target}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="size_for">Size For *</label>
+                                            <select class="form-control" name="size_for" id="size_for" required>
+                                                <option value="0">Choose One</option>
+                                                 @foreach ($size_for as $kz => $sizefr)
+                                                    <option 
+                                                     @if ($size->size_for == $kz)
+                                                        selected="selected" 
+                                                    @endif
+                                                    value="{{ $kz }}"> {{$sizefr}}</option>
+                                                 @endforeach                                    
+                                            </select>
+                                        </div>
+                                    </div>
                                     
                                     
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <div class="form-group text-center">
                                             <label for="status">Status</label>
                                             <div class="custom-control custom-checkbox">
                                                 <input class="custom-control-input" name="status" value="1"
-                                                    type="checkbox" id="status" @if ($size->status == '0')
+                                                    type="checkbox" id="status" 
+                                                    @if ($size->status == '0')
                                                     checked="checked" @endif {{ old('status') ? 'checked' : '' }} />
                                                 <label for="status" class="custom-control-label">Active</label>
                                             </div>

@@ -45,15 +45,38 @@ $params['title'] = 'Create Size';
                                 @csrf
                                 <div class="card-body">
                                     <div class="row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="form-group">
                                                 <label for="name">Name *</label>
                                                 <input type="text" id="name" class="form-control" 
                                                     name="name" value="{{ old('name') }}" 
                                                     placeholder="Size" required>
                                             </div>
-                                        </div>                                        
-                                        <div class="col-md-2">
+                                        </div>   
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="target_age">For *</label>
+                                                <select class="form-control" name="target_age" id="target_age" required>
+                                                    <option value="0">Choose Target Age</option>
+                                                    <option value="A">For Adult</option>
+                                                    <option value="K">For Kids</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="size_for">Size For *</label>
+                                                <select class="form-control" 
+                                                    name="size_for" id="size_for" required>
+                                                    <option value="0">Choose One</option>
+                                                    <option value="T">Top Wear</option>
+                                                    <option value="B">Bottom Wear</option>
+                                                    <option value="S">Shoes</option>
+                                        
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
                                             <div class="form-group text-center">
                                                 <label for="status">Status</label>
                                                 <div class="custom-control custom-checkbox">

@@ -12,7 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-            $middleware->alias([
+        // for forword porting
+        // $middleware->trustProxies(at: '*');
+        // end
+    $middleware->alias([
                 'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
 
                 'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,

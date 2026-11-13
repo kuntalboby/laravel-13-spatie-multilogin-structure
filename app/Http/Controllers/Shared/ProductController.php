@@ -32,9 +32,14 @@ class ProductController extends Controller
     public function index(Request $request)
 {
     if ($request->ajax()) {
-        $query = Product::with(['brand:id,name', 'category:id,name'])
-            ->where('products.is_deleted', '0')
-            ->select(['products.name','products.category_id','products.brand_id',
+        $query = Product::with(
+            [
+        'brand:id,name',
+        'category:id,name',
+        'productPrices:id,product_id,brand_size_id',
+        'productPrices.brandSize:id,size'
+        ])
+            ->select(['products.id','products.name','products.category_id','products.brand_id',
                 'products.status','products.randomid','products.image','products.form_step_counter']);
 
         return DataTables::eloquent($query)
@@ -67,15 +72,28 @@ class ProductController extends Controller
                 return '<img src="' . e($src) . '" alt="" width="50" height="50"
                              style="object-fit:cover;border-radius:6px;">';
             })
+            ->addColumn('sizes', function ($p) {
+                $boxs = '';
+                $uniquePrices = $p->productPrices->unique('brand_size_id');
+                
+                if ($uniquePrices->count() > 0) {
+                    foreach ($uniquePrices as $sz) {
+                        $sizeName = strtoupper($sz->brandSize->size) ?? '';
+                        $boxs .= '<span class="btn btn-light" style="border:1px solid #36bda0">' . $sizeName .'</span> ';
+                    }
+                }
+                
+                return $boxs;
+            })
             ->addColumn('brand', fn ($p) => e($p->brand->name ?? '-'))
             ->addColumn('category', fn ($p) => e($p->category->name ?? '-'))
             ->addColumn('status', function ($p) {
                     $formStepStatus =  $p->form_step_counter < config('PROD_FORMS_COUNT') ? 'info' : 'check';
                     $formStepStatusColor =  $p->form_step_counter < config('PROD_FORMS_COUNT') ? 'warning' : 'success';
                     $statusInfo =  $p->form_step_counter < config('PROD_FORMS_COUNT') ? 'Draft' : 'Completed';
-                return $p->status == 1
+                return $p->status == 0
                     ? '<span class="text text-'.$formStepStatusColor.'" title="'.$statusInfo.'"><i class="fas fa-'.$formStepStatus.'"></i></span>'
-                    : 'span class="text text-danger"><i class="fas fa-times"></i></span>';
+                    : '<span class="text text-danger"><i class="fas fa-times"></i></span>';
             })
             ->addColumn('action', function ($p) {
                 $edit = route('admin.masters.products.edit', $p->randomid);
@@ -98,7 +116,7 @@ class ProductController extends Controller
                     //     <i class="fas fa-trash text-danger"></i>
                     // </button>';
             })
-            ->rawColumns(['image', 'status', 'action'])
+            ->rawColumns(['image','sizes','status', 'action'])
             ->toJson();
     }
 
@@ -141,7 +159,6 @@ class ProductController extends Controller
     public function storeProduct( ProductInfoRequest $request){
         $validated = $request->validated();
         $imageName = null;
-        // return $validated;
             try {
                 $form_step_counter = 1; // basic info form
                 
@@ -168,25 +185,24 @@ class ProductController extends Controller
                         }
 
             $product = Product::create([
-                'name'              => $validated['name'],
-                'gst'               => $validated['gst'],
-                'category_id'       => $validated['category_id'],
-                'brand_id'          => $validated['brand_id'],
-                'gender_id'         => $validated['gender_id'],
-                'product_for'       => $validated['product_for'],
-                'short_description' => $validated['short_description'] ?? null,
-                'long_description'  => $validated['long_description'] ?? null,
-                'related_product_hash_tag'  => $validated['related_product_hash_tag'] ?? null,
-                'is_featured'       => $validated['is_featured'] ? '1' : '0',
-                'is_promotional'    => $validated['is_promotional'] ? '1' : '0',
-                'status'            => $validated['status'] ? '1' : '0',
-
-                'image'             => $imageName,
-                'form_step_counter' =>$form_step_counter
-            ]);
+                    'name' => $validated['name'],
+                    'gst' => $validated['gst'],
+                    'category_id' => $validated['category_id'],
+                    'brand_id' => $validated['brand_id'],
+                    'gender_id' => $validated['gender_id'],
+                    'product_for' => $validated['product_for'],
+                    'short_description' => $validated['short_description'] ?? null,
+                    'long_description' => $validated['long_description'] ?? null,
+                    'related_product_hash_tag' => $validated['related_product_hash_tag'] ?? null,
+                    'is_featured' => isset($validated['is_featured']) ? $validated['is_featured'] : '0',
+                    'is_promotional' => isset($validated['is_promotional']) ? $validated['is_promotional'] : '0',
+                    'status' => isset($validated['status']) ? '0' : '1',
+                    'image' => $imageName,
+                    'form_step_counter' => $form_step_counter
+                ]);
 
             session()->flash('response', 'success');
-            return redirect()->back()
+            return redirect()->route('admin.masters.products.edit',$product->randomid)
                 ->with('message', 'Basic information of the product created successfully.')
                 ->with('product_id', $product->id)
                 ->with('next_step', 2);
@@ -215,7 +231,7 @@ class ProductController extends Controller
         // return $prod->get('image');
         $validated = $request->validated();
         $imageName =$prodImage;
-        //    return $prodImage;
+            // return $validated;
             try {               
                 
                     if ($request->hasFile('image')) {
@@ -256,9 +272,9 @@ class ProductController extends Controller
                 'short_description' => $validated['short_description'] ?? null,
                 'long_description'  => $validated['long_description'] ?? null,
                 'related_product_hash_tag'  => $validated['related_product_hash_tag'] ?? null,
-                'is_featured'       => $validated['is_featured'] ? '1' : '0',
-                'is_promotional'    => $validated['is_promotional'] ? '1' : '0',
-                'status'            => $validated['status'] ? '1' : '0',
+                'is_featured'       => isset($validated['is_featured']) ? '1' : '0',
+                'is_promotional'    => isset($validated['is_promotional']) ? '1' : '0',
+                'status'            => isset($validated['status']) ? '0' : '1',
                 'image'             => $imageName,
             ]);
 
@@ -307,7 +323,7 @@ class ProductController extends Controller
             'gender_id' => $product->gender_id,
             'size_of'=>$product->product_for
         ])->orderBy('id')->select(['product_type','size','size_chart','id'])->get();            
-                    // return $allSizes;
+                    //  return $allSizes;
 
         $productColors = $product->productPrices
                 ->unique('color_id')          // one price row per color
@@ -534,8 +550,13 @@ class ProductController extends Controller
 // upload variation 
 private function sellingPrice(Product $product, float $mrp, float $discount): float
 {
-    $afterDiscount = $mrp * (100 - $discount) / 100;
-    return round($afterDiscount * (1 + ((float) $product->gst) / 100), 2);
+        $afterDiscount = $mrp * round((100 - $discount)/100, 2);
+        $gstIncluded = $mrp * round( ((float) $product->gst / 100) , 2);
+
+        $sellingPrice = $afterDiscount + $gstIncluded;
+        //  return round($afterDiscount * (1 + ((float) $product->gst) / 100), 2);
+        return $sellingPrice;
+        
 }
 
 public function uploadVariationExcel(Request $request, string $randomid)

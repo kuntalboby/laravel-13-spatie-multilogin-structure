@@ -139,13 +139,16 @@ class MastersController extends Controller
          Gate::authorize('product_sizes.add');
             $request->validate([
                 'name' => ['required', 'unique:sizes', 'max:100'],
-               
+                'target_age' => ['required', 'in:"A","K"'],
+                'size_for' => ['required', 'in:"T","B","S"'],
             ]);
             try {
 
             // return $request;
                         Size::create([
                                 'name'        => $request->name,
+                                'target_age'        => $request->target_age,
+                                'size_for'        => $request->size_for,
                                 'slug'        => strtolower($request->name),
                                 'user_id'      => Auth::id(),
                                 'status'      => $request->has('status') ? '0' : '1',
@@ -164,18 +167,22 @@ class MastersController extends Controller
         $size = Size::where('randomid', $slug)->firstOrFail();
         // Gate::authorize('product_sizes.edit', $size);
         Gate::authorize('product_sizes.edit');
-        $allsize = Size::whereNot('randomid', $slug)->where('is_deleted','0')->get();
-
+        // $allsize = Size::whereNot('randomid', $slug)->where('is_deleted','0')->get();
+        // return $size;
         // return $request->method();
-        if( $request->method() === 'PUT'){
-             try {
-                $request->validate([
+       if( $request->method() === 'PUT'){
+             $request->validate([
                     'name' => ['required', 'max:20', Rule::unique('sizes')->ignore($size->id)],
+                    'target_age' => ['required', 'in:"A","K"'],
+                    'size_for' => ['required', 'in:"T","B","S"'],
                 ]);
-
+             try {
+            
                     $updatedData = Size::where('randomid', $slug)->update(
                         [
                                 'name'        => $request->name,
+                                'target_age'        => $request->target_age,
+                                'size_for'        => $request->size_for,
                                 'slug'        => strtolower($request->name),
                                 'description' => null,
                                 'status'      => $request->has('status') ? '0' : '1',
@@ -190,7 +197,7 @@ class MastersController extends Controller
              }
         }
 
-        return view('admin.masters.edit-size', compact('size','allsize'));
+        return view('admin.masters.edit-size', compact('size'));
     }
     
 
@@ -419,11 +426,11 @@ class MastersController extends Controller
         ->with(['brandSizes.category:id,randomid,name', 'brandSizes.gender:id,name'])
         ->where('randomid', $slug)->firstOrFail();
 
-        // return $brand;
+         $listOfSizes = $brand->brandSizes->groupBy('category.name');
         // Gate::authorize('product_brands.edit'); // policy already defined in BrandPolicy check if want to make user basis checcking
         //  Gate::authorize('edit',$brand);
 
-         return view('admin.masters.brand-sizes', compact('brand'));
+         return view('admin.masters.brand-sizes', compact('brand','listOfSizes'));
     }
 
     public function createBrandSize(string $slug)
@@ -475,15 +482,15 @@ public function storeBrandSizeCsvExport(Request $request)
     $type = $request->product_type;
 
     $brand = Brand::select('id', 'name', 'randomid')
-        ->where('is_deleted', '0')->where('randomid', $request->brand_slug)->firstOrFail();
+       ->where('randomid', $request->brand_slug)->firstOrFail();
 
     $category = Category::select('id', 'randomid', 'name')
-        ->where('is_deleted', '0')->where('randomid', $request->category_id)->firstOrFail();
+        ->where('randomid', $request->category_id)->firstOrFail();
 
     $gender = Gender::select('id', 'name')->where('id', $request->gender_id)->firstOrFail();
 
     $sizes = Size::select('id', 'name')
-        ->where('is_deleted', '0')
+        ->where('status','0')
         ->where('size_for', $type)
         ->where('target_age', $request->target_age)
         ->orderBy('id')->get();
